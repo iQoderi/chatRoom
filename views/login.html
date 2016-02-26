@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,user-scalable=no">
+    <title>欢迎来到Qoder聊天室</title>
+    <link href="../stylesheets/login.css" rel="stylesheet"/>
+    <script src="https://cdn.socket.io/socket.io-1.2.1.js"></script>
+</head>
+<body>
+<div class="loginWrapper">
+    <div class="loginError" id="loginError">用户名输入不合法</div>
+    <div class="loginBox">
+        <div class="loginHeader">
+            <span class="loginIcon"></span>
+            <span class="loginWord"></span>
+        </div>
+        <div class="hr"></div>
+        <div class="loginContent">
+            <div class="loginInput">
+                <input type="text" placeholder="请输入用户名" id="username">
+            </div>
+            <div class="loginBtn">
+                <input type="button" value="加入聊天室" id="loginBtn">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="loading" style="display: none" id="loading"></div>
+<script src="../javascripts/chat_app.js"></script>
+</body>
+</html>
