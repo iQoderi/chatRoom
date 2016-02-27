@@ -15,6 +15,8 @@ window.onload = function () {
         chatWord = $("chatWord"),
         emoji = $("emoji"),
         emojiBox = $("emojiBox"),
+        pic = $("pic"),
+        picBox = $("picBox"),
         windowshake = $("windowshake"),
         toolBar = $("toolBar");
 
@@ -112,10 +114,16 @@ window.onload = function () {
         //表情
         var emojiObj = operationEmoji(emojiBox);
         emoji.onclick = function () {
+            picBox.hideEmoji();
             emojiObj.showEmoji();
-            console.log(toolBar.offsetHeight);
         };
 
+        //图片表情
+        var picBox = operationEmoji(picBox);
+        pic.onclick = function () {
+            emojiBox.hideEmoji();
+            picBox.showEmoji();
+        }
         //输入框获取焦点事件
         chatMsg.onfocus = function () {
             getFocus();
@@ -124,17 +132,19 @@ window.onload = function () {
         //消息显示区域点击事件
         chatContent.onclick = function () {
             emojiObj.hideEmoji();
+            picBox.showEmoji();
         };
 
         //头部点击事件
         chatHeader.onclick = function () {
             emojiObj.hideEmoji();
+            picBox.showEmoji();
             chatContent.scrollTop = 0;  //返回头部
         };
 
+
         //发送表情
         var selectEmoji = emojiBox.getElementsByClassName("item");
-        console.log(selectEmoji);
         for (var i = 0; i < selectEmoji.length; i++) {
             selectEmoji[i].onclick = function () {
                 var imgUrl = this.childNodes[0].getAttribute('src');
@@ -144,6 +154,51 @@ window.onload = function () {
                 chatMsg.value += inputstr;
             }
         }
+
+        //发送图片表情
+        var selectExpression = picBox.getElementsByClassName("item");
+        for (var j = 0; j < selectExpression.length; j++) {
+            selectExpression[j].onclick = function () {
+                var imgUrl = this.childNodes[0].getAttribute("src");
+                showPicMsg('self-item', '<img src=' + imgUrl + '>');
+                newMsgScroll();
+                socket.emit('bigEmoji', {src: imgUrl});
+            }
+        }
+
+        //接收其他用户发来的图片表情
+        socket.on('sendBigEmoji', function (data) {
+            console.log(data);
+            showPicMsg('item', '<img src=' + data.src + '>');
+            newMsgScroll();
+        });
+        //移动端滑屏事件
+        var sliding = {};
+        picBox.addEventListener('touchstart', function (event) {
+            sliding.xx = event.targetTouches[0].screenX;
+            sliding.yy = event.targetTouches[0].screenY;
+            sliding.swipeX = true;
+        });
+
+        picBox.addEventListener('touchmove', function (event) {
+            sliding.XX = event.targetTouches[0].screenX;
+            sliding.YY = event.targetTouches[0].screenY;
+        });
+
+        picBox.addEventListener('touchend', function (event) {
+            //event.preventDefault();
+            sliding.StopX = event.changedTouches[0].clientX;
+            sliding.StopY = event.changedTouches[0].clientY;
+            if (sliding.StopX - sliding.xx > 100 && Math.abs(sliding.YY - sliding.yy) < 30) {
+                picBox.classList.remove("picBoxRun");
+                picBox.classList.add("picBoxRunReverser");
+            }
+            if (sliding.xx - sliding.StopX > 100 && Math.abs(sliding.YY - sliding.yy) < 30) {
+                picBox.classList.remove("picBoxRunReverser");
+                picBox.classList.add("picBoxRun");
+            }
+
+        })
 
     }
 
@@ -202,6 +257,21 @@ var showMsg = function (className, msg) {
     chatWord.appendChild(chatitem);
 };
 
+
+//发送图片表情
+var showPicMsg = function (className, msg) {
+    chatMsg.value = "";
+    var chatitem = document.createElement("div");
+    chatitem.className = className;
+    var inneritem = '<span class="avatar"><img src="../images/empty_head.png">' +
+        '</span> <span class="msgWrapper">' + '<span class="triangle"></span>' +
+        '<span class="username">' + 'Qoder' + '</span>' + '<span class="msg">' +
+        msg + '</span>' + '</span>';
+    chatitem.innerHTML = inneritem;
+    chatWord.appendChild(chatitem);
+};
+
+
 //按住Enter键发生的事件
 var Enter = function (dosth) {
     document.onkeydown = function (event) {
@@ -241,11 +311,15 @@ var operationEmoji = function (dom) {
     return dom;
 };
 
+
 //输入框获取焦点
 var getFocus = function () {
     var emojiObj = operationEmoji(emojiBox);
+    var picObj = operationEmoji(picBox);
     emojiObj.hideEmoji();
+    picObj.hideEmoji();
     chatMsg.focus();
+    newMsgScroll();
 };
 
 //处理表情
@@ -255,4 +329,4 @@ var EmojiEngine = function (tpl) {
         tpl = tpl.replace(match[0], "<img src='../emoji/" + match[1] + ".png' />");
     }
     return tpl;
-}
+};

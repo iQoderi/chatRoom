@@ -37,13 +37,15 @@ body, html {
 
 .chatDetail {
     display: block;
-    height: 30px;
-    width: 40px;
-    background: url("../images/usericon.png") no-repeat center;
-    background-size: cover;
+    height: 40px;
+    width: 50px;
+    background: url("../images/user.png") no-repeat center;
+    background-size: 70% 70%;
     float: right;
-    margin-top: 5px;
-    margin-right: 20px;
+}
+
+.chatDetail:hover {
+    background-color: #666;
 }
 
 .chatContent {
@@ -55,11 +57,12 @@ body, html {
     overflow-x: hidden;
 }
 
-.toolBar{
+.toolBar {
     position: fixed;
     bottom: 0;
     z-index: 100000;
 }
+
 .chatInput {
     width: 100vw;
     height: 40px;
@@ -96,15 +99,16 @@ body, html {
     -ms-user-select: none;
     user-select: none;
 }
+
 /*表情包和窗口抖动*/
-.chatTab{
+.chatTab {
     height: 40px;
     width: 100%;
     background: #F6F6F6;
     line-height: 40px;
 }
 
-.chatTab .emoji,.chatTab .windowshack{
+.chatTab .emoji, .chatTab .windowshack, .chatTab .pic {
     height: 30px;
     width: 30px;
     margin-top: 5px;
@@ -116,31 +120,98 @@ body, html {
     box-sizing: border-box;
 }
 
-.chatTab .emoji{
+.chatTab .emoji {
     background: url("../images/happy@10x.png") no-repeat center;
     background-size: 100%;
 }
 
-.chatTab .windowshack{
+.chatTab .windowshack {
     background: url("../images/shake.png") no-repeat center;
-    background-size: 100%;
+    background-size: 130%;
 }
+
+.chatTab .pic {
+    border-radius: 0;
+    background: url("../images/pic.png") no-repeat center;
+    background-size: 130%;
+}
+
 /*表情包*/
-.emojiBox{
-    width:100%;
+.emojiBox, .picBox {
+    width: 100%;
     height: 240px;
     background: #F6F6F6;
     display: flex;
     display: -webkit-flex;
     flex-direction: row;
-    flex-wrap:wrap;
-    justify-content:center;
-    align-items:center;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
     overflow: hidden;
     display: none;
 }
 
-.emojiBox .item{
+.picBox {
+    width: 200%;
+    height: 240px;
+    position: relative;
+    transition: all 0.5s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+}
+
+.picBoxRun {
+    transform: translate3d(-50%, 0, 0);
+}
+
+.picBoxRunReverser {
+    transform: translate3d(0%, 0, 0);
+}
+
+.picBox1, .picBox2 {
+    width: 50%;
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    height: 200px;
+    float: left;
+}
+
+.picBox1 .item, .picBox2 .item {
+    width: 21%;
+}
+
+
+.tab{
+    height: 20px;
+    width: 100%;
+    position:relative;
+    left: 0;
+    text-align: center;
+    line-height: 20px;
+    bottom: -20px;
+}
+
+.tab .circle{
+    height: 8px;
+    width: 8px;
+    display: inline-block;
+    border: 1px solid #008800;
+    border-radius:8px;
+    margin-top: 6px;
+}
+
+.tab .circle2{
+    margin-left: 10px;
+}
+
+.picBox1 .tab .circle1,.picBox2 .tab .circle2{
+    background:#008800;
+}
+
+.emojiBox .item {
     padding: 5px;
     width: 38px;
     height: 38px;
@@ -149,13 +220,15 @@ body, html {
     box-sizing: border-box;
 }
 
-.emojiBox .item:hover{
+.emojiBox .item:hover {
     border: 1px #cccccc solid;
 }
-.emojiBox .item img{
+
+.emojiBox .item img {
     height: 25px;
     width: 25px;
 }
+
 .chatWord {
     width: 95vw;
     margin: 0 auto;
@@ -202,7 +275,7 @@ body, html {
     padding: 10px;
     box-sizing: border-box;
     border-radius: 10px;
-    word-wrap:break-word;
+    word-wrap: break-word;
 }
 
 .item .triangle {
@@ -276,32 +349,32 @@ body, html {
     right: 45px;
 }
 
-
 /*窗口抖动动画*/
-.shake{
-    animation:shakewindows .1s ease-in-out;
-    -webkit-animation:shakewindows .1s ease-in-out;
-    animation-iteration-count:3;
-    -webkit-animation-iteration-count:3;
+.shake {
+    animation: shakewindows .1s ease-in-out;
+    -webkit-animation: shakewindows .1s ease-in-out;
+    animation-iteration-count: 3;
+    -webkit-animation-iteration-count: 3;
 }
-@-webkit-keyframes shakewindows{
-    0%{
-        transform:rotate(2deg);
+
+@-webkit-keyframes shakewindows {
+    0% {
+        transform: rotate(1deg) scale(1.05);
     }
-    20%{
-        transform: rotate(3deg);
+    20% {
+        transform: rotate(2deg) scale(1.1);
     }
-    40%{
-        transform: rotate(6deg);
+    40% {
+        transform: rotate(3deg) scale(1.15);
     }
-    60%{
-        transform: rotate(-2deg);
+    60% {
+        transform: rotate(-1deg) scale(1.15);
     }
-    80%{
-        transform: rotate(-3deg);
+    80% {
+        transform: rotate(-2deg) scale(1.1);
     }
 
-    100%{
-        transform: rotate(-6deg);
+    100% {
+        transform: rotate(-3deg) scale(1.05);
     }
 }

@@ -12,12 +12,16 @@ module.exports = function (server) {
             socket.broadcast.emit('allusersSay', data);
         });
         socket.broadcast.emit('joinusers', {username: "haha"});
+        socket.on('bigEmoji', function (data) {
+            console.log(data);
+            socket.broadcast.emit('sendBigEmoji', data);
+        });
         socket.on('disconnect', function () {
             socket.broadcast.emit('usersleave', {username: "haha"});
             console.log('用户已经离开');
         });
         socket.on('shakewindow', function (data) {
-            socket.broadcast.emit('shakewindow',data);
-        })
+            socket.broadcast.emit('shakewindow', data);
+        });
     });
 }
