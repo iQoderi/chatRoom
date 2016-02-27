@@ -132,13 +132,13 @@ window.onload = function () {
         //消息显示区域点击事件
         chatContent.onclick = function () {
             emojiObj.hideEmoji();
-            picBox.showEmoji();
+            picBox.hideEmoji();
         };
 
         //头部点击事件
         chatHeader.onclick = function () {
             emojiObj.hideEmoji();
-            picBox.showEmoji();
+            picBox.hideEmoji();
             chatContent.scrollTop = 0;  //返回头部
         };
 
@@ -160,7 +160,7 @@ window.onload = function () {
         for (var j = 0; j < selectExpression.length; j++) {
             selectExpression[j].onclick = function () {
                 var imgUrl = this.childNodes[0].getAttribute("src");
-                showPicMsg('self-item', '<img src=' + imgUrl + '>');
+                showPicMsg('self-item', '<img src=' + imgUrl + ' style="max-width: 50vw">');
                 newMsgScroll();
                 socket.emit('bigEmoji', {src: imgUrl});
             }
@@ -169,7 +169,7 @@ window.onload = function () {
         //接收其他用户发来的图片表情
         socket.on('sendBigEmoji', function (data) {
             console.log(data);
-            showPicMsg('item', '<img src=' + data.src + '>');
+            showPicMsg('item', '<img style="max-width: 50vw" src=' + data.src + '>');
             newMsgScroll();
         });
         //移动端滑屏事件

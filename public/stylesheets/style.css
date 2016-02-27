@@ -183,6 +183,10 @@ body, html {
     width: 21%;
 }
 
+.picBox img{
+    height:80%;
+    width: 80%;
+}
 
 .tab{
     height: 20px;
