@@ -22,6 +22,11 @@
             <i class="emoji" id="emoji"></i>
             <i class="windowshack" id="windowshake"></i>
             <i class="pic" id="pic"></i>
+            <i class="addPic" id="addPic">
+                <form id="fileform">
+                    <input type="file" id="file" name="resource" accept="image/*" multiple>
+                </form>
+            </i>
         </div>
         <div class="chatInput">
             <input type="text" style="word-break:break-all" placeholder="请输入聊天内容" id="chatMsg">
@@ -108,6 +113,13 @@
             </div>
         </div>
     </div>
+</div>
+<div class="picPreview" id="picPreview" style="display: none;">
+    <div class="preHeader">
+        <i class="close" id="close">×</i>
+            <input type="button" class="sendPic" id="sendPic" value="上传头像">
+    </div>
+    <!--<img src="../images/bodybg.jpg" style="height:100vh;width: 100vw">-->
 </div>
 <script src="../javascripts/chat_app.js"></script>
 </body>

@@ -6,6 +6,9 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var User = mongoose.model('Users');
+router.get('/', f = function (req, res, next) {
+    res.render('index');
+});
 router.get('/login', function (req, res, next) {
     if (req.session.hasLogin) {
         res.redirect('/chatRoom');
@@ -21,7 +24,7 @@ router.post('/login', function (req, res, next) {
         }
         if (user) {
             res.json(401, {msg: '该用户名已经被占用了'});
-        }else {
+        } else {
             User.create({
                 username: req.body.username
             }, function (err, users) {
@@ -39,9 +42,9 @@ router.post('/login', function (req, res, next) {
 });
 
 router.get('/chatRoom', function (req, res, next) {
-    if (req.session.hasLogin){
+    if (req.session.hasLogin) {
         res.render('chatRoom')
-    }else {
+    } else {
         res.redirect('/login');
     }
 });

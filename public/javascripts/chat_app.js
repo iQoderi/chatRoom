@@ -18,6 +18,11 @@ window.onload = function () {
         pic = $("pic"),
         picBox = $("picBox"),
         windowshake = $("windowshake"),
+        file = $("file"),
+        picPreview = $("picPreview"),
+        close = $("close"),
+        sendPic = $("sendPic"),
+        preImgBox = $("preImgBox"),
         toolBar = $("toolBar");
 
 
@@ -189,18 +194,42 @@ window.onload = function () {
             //event.preventDefault();
             sliding.StopX = event.changedTouches[0].clientX;
             sliding.StopY = event.changedTouches[0].clientY;
-            if (sliding.StopX - sliding.xx > 100 && Math.abs(sliding.YY - sliding.yy) < 30) {
+            if (sliding.StopX - sliding.xx > 60 && Math.abs(sliding.YY - sliding.yy) < 30) {
                 picBox.classList.remove("picBoxRun");
                 picBox.classList.add("picBoxRunReverser");
             }
-            if (sliding.xx - sliding.StopX > 100 && Math.abs(sliding.YY - sliding.yy) < 30) {
+            if (sliding.xx - sliding.StopX > 60 && Math.abs(sliding.YY - sliding.yy) < 30) {
                 picBox.classList.remove("picBoxRunReverser");
                 picBox.classList.add("picBoxRun");
             }
 
         })
 
+        //上传图片
+        file.onchange = function () {
+            var formData = new FormData(),
+                xhr = getXmlhttp();
+            console.log($("file").files[0]);
+            formData.append('resource', $("file").files[0]);
+            xhr.open('POST', '/file/fileupload');
+            xhr.send(formData);
+            xhr.upload.onprogress = function (e) {
+                console.log(e.loaded / e.total * 100);   //上传进度
+            }
+
+            xhr.onprogress = function (e) {
+                console.log(e.loaded / e.total * 100);  //下载进度
+            }
+
+            //预览图片
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                console.log(this.result);
+            };
+            reader.readAsDataURL($("file").files[0]);
+        }
     }
+
 
 };
 
@@ -265,7 +294,7 @@ var showPicMsg = function (className, msg) {
     chatitem.className = className;
     var inneritem = '<span class="avatar"><img src="../images/empty_head.png">' +
         '</span> <span class="msgWrapper">' + '<span class="triangle"></span>' +
-        '<span class="username">' + 'Qoder' + '</span>' + '<span class="msg">' +
+        '<span class="username">' + 'Qoder' + '</span>' + '<span class="msg" id="showHtml">' +
         msg + '</span>' + '</span>';
     chatitem.innerHTML = inneritem;
     chatWord.appendChild(chatitem);
@@ -330,3 +359,59 @@ var EmojiEngine = function (tpl) {
     }
     return tpl;
 };
+
+//检查上传文件是否为图片
+var checkPic = function (fileName) {
+    var picPath = fileName.value;
+    var picArray = picPath.split(".");
+    var type = picArray[picArray.length - 1].toLowerCase();
+    console.log(type);
+    if (type != "jpg" && type != "bmp" && type != "gif" && type != "png") {
+        alert("请上传正确格式的图片");
+        return false;
+    }
+    return true;
+};
+
+
+//实现图片预览并且上传功能
+//var previewImage = function (imgBox, upload) {
+//    if (checkPic(upload)) {
+//        try {
+//            var imgPath = "";      //图片路径
+//            var Brower_Agent = navigator.userAgent;
+//            if (Brower_Agent.indexOf('Firefox') != -1) {    //火狐浏览器
+//                imgPath = upload.file[0].getAsDataURL();
+//                imgBox.style.display = 'block';
+//                var preImg = document.createElement("img");
+//                preImg.cssText = "height:100vh;width: 100vw";
+//                imgBox.appendChild(preImg);
+//            } else {
+//                var preview = document.createElement("img");
+//                preview.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = upload.value;
+//                preview.cssText = "height:100vh;width: 100vw"
+//            }
+//        } catch (e) {
+//            alert("上传正确格式的图片");
+//        }
+//    }
+//};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
